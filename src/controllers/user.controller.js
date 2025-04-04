@@ -3,6 +3,7 @@ import { apierror } from "../utils/apierror.js";
 import { User } from "../models/user.model.js";
 import { uploadoncloudinary } from "../utils/cloudinary.js";
 import { apiresponse } from "../utils/apiresponse.js";
+
 const registeruser = asynchandler(async (req, res) => {
   const { fullname, email, username, password } = req.body;
   console.log("email:", email);
@@ -12,7 +13,7 @@ const registeruser = asynchandler(async (req, res) => {
   ) {
     throw new apierror(400, "all fields are required");
   }
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ username }, { email }],
   });
   if (existedUser) {
